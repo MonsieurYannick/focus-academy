@@ -117,7 +117,7 @@ function QuizAttemptCard({ quiz }: { quiz: LearningQuiz }) {
     if (submitError) setError(submitError.message)
     else {
       const row = Array.isArray(data) ? data[0] : data
-      if (row) setResult({ score: Number(row.score), passed: Boolean(row.passed), feedback: row.feedback ?? [] })
+      if (row) setResult({ score: Number(row.score), passed: Boolean(row.passed), feedback: Array.isArray(row.feedback) ? (row.feedback as { question_id: string; correct: boolean; explanation: string }[]) : [] })
       else setError('Le serveur n’a pas renvoyé le résultat de la tentative.')
     }
     setBusy(false)

@@ -552,7 +552,7 @@ export function LessonPage() {
   useEffect(() => { void load() }, [load])
 
   async function markComplete() {
-    if (!supabase || !user) return
+    if (!supabase || !user || !lessonId) return
     setBusy(true); setActionMessage('')
     const { error: completeError } = await supabase.rpc('complete_lesson', { p_lesson_id: lessonId })
     if (completeError) setActionMessage(completeError.message)
