@@ -10,7 +10,7 @@ Le projet est une application statique Vite. Aucun backend n’est requis pour u
 2. Commande de build : `npm run build`
 3. Dossier de publication : `dist`
 4. Aucune variable d’environnement n’est nécessaire pour le studio.
-5. Pour activer Supabase plus tard, ajoutez `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` dans les variables Netlify, puis appliquez la migration.
+5. Pour activer Supabase, ajoutez `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` dans les variables Netlify, puis appliquez la migration. Ces deux variables sont désormais définies dans la section `[build.environment]` de `netlify.toml`.
 
 Le fichier `netlify.toml` et `public/_redirects` gèrent le routage SPA.
 
@@ -101,12 +101,12 @@ Les données pédagogiques ne sont pas inventées ou préchargées : les formati
 
 ## État des intégrations
 
-- **Auth, base, stockage et sessions :** code prêt à raccorder, mais aucun projet Supabase distant n’est configuré ou connecté dans ce dépôt.
+- **Auth, base, stockage et sessions :** code prêt à raccorder. Le client est typé sur le schéma Supabase généré (`src/lib/database.types.ts`) et branché via `createClient<Database>` dans `src/lib/supabase.ts`. Le projet distant `jbrnflhhexcemmwaloub` (Supabase, eu-west-1) a eu la migration initiale appliquée, les types générés depuis la base appliquée, et le client branché sur les clés publiques (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`).
 - **Ressources vidéo :** les URL HTTP(S) autorisées s’ouvrent chez leur fournisseur. FOCUS ne télécharge ni ne réhéberge de contenus tiers.
 - **Sessions en direct :** la plateforme stocke date, formateur et lien facultatif ; aucune visioconférence n’est intégrée.
 - **Rapports :** le rapport à l’écran utilise les données autorisées et peut être imprimé/enregistré en PDF depuis le navigateur. Aucun document n’est généré côté serveur.
-- **Certificats :** la migration prévoit une délivrance contrôlée, une révocation et une vérification RPC. Ces fonctions deviennent opérationnelles après application de la migration et tests sur Supabase.
+- **Certificats :** la migration prévoit une délivrance contrôlée, une révocation et une vérification RPC (`issue_certificate`, `revoke_certificate`, `verify_certificate`) opérationnels avec le schéma appliqué.
 
 ## Limites connues
 
-La migration n’a pas été appliquée ni validée sur un serveur PostgreSQL dans cet environnement : le CLI Supabase et un compte externe ne sont pas configurés. Les autorisations doivent être éprouvées avec des comptes de test distincts (admin, formateur, étudiant, tuteur) avant toute donnée réelle. Le stockage vidéo volumineux dépend aussi des quotas et limites du forfait Supabase choisi.
+La plateforme a été livrée contre un projet Supabase de démonstration (`jbrnflhhexcemmwaloub`, Postgres 17) : schéma appliqué, types générés et client typé en place. Avant toute donnée réelle, les autorisations doivent être éprouvées avec des comptes de test distincts (admin, formateur, étudiant, tuteur) ; le stockage vidéo volumineux dépend aussi des quotas et limites du forfait Supabase choisi. Le déploiement est publié sur Netlify (`focus-academy-d73ca764`) et reste une instance partagée du domaine public.
